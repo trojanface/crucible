@@ -16,6 +16,10 @@ app.use(routes);
 //   response.sendFile(path.resolve(__dirname, 'client/build', 'index.html'));
 // });
 
-app.listen(PORT, function () {
-  console.error(`Node listening on port ${PORT}`);
+crucibleDB.sequelize.sync().then(function() {
+  app.listen(PORT, function () {
+    console.error(`Node listening on port ${PORT}`);
+  });
+}).catch((err) => {
+  console.log(err);
 });
