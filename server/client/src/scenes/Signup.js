@@ -17,10 +17,16 @@ export default function Signup() {
     function newUserSubmit(event) {
         event.preventDefault();
         API.addUser(newUser).then(() => {
-            console.log("user added");
+            API.login({ username: newUser.username, password: newUser.password }).then(() => {
+                setScene('home');
+                console.log("logged in successful");
+            });
         }).catch((err) => {
             console.log(err);
         })
+    }
+    if (scene === 'home') {
+        return <Redirect to='/home' />
     }
     if (scene === 'login') {
         return <Redirect to='/' />

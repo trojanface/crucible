@@ -1,9 +1,12 @@
 const path = require("path");
 const router = require("express").Router();
 const apiRoutes = require("./api");
+const passport = require("passport");
 require("dotenv").config();
 router.use("/api", apiRoutes);
-
+router.post('/auth/local', passport.authenticate("local"), function (req, res) {//when route called it uses the passport.authenticate middleware before running the callback function
+  res.json(req.user);//returns the user from the authenticate function
+});
 router.use(function(req, res) {//catch all - return the react app
     res.sendFile(path.join(__dirname, "../client/build/index.html"));
   });

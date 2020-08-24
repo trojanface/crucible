@@ -46,7 +46,7 @@ module.exports = {
     }
   },
   create: function (req, res) {
-    if (req.user) {//checking if user is validated
+    console.log(req.body)
       return sequelize.transaction(function (dbTransaction) {//places sql query in a transaction
         return db.users
           .create(req.body, { transaction: dbTransaction })
@@ -55,5 +55,5 @@ module.exports = {
       })
 
     }
-  }
+  
 };
