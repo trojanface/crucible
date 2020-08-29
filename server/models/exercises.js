@@ -18,8 +18,16 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
+        isIsolation: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
         equipmentRequired: {
             type: DataTypes.STRING,
+            allowNull: false
+        },
+        ownedBy: {
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         isActive: {

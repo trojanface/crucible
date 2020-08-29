@@ -43,6 +43,9 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false
         },
+        ownedEquipment: {
+            type: DataTypes.STRING
+        },
         isActive: {
             type: DataTypes.BOOLEAN,
             defaultValue: true

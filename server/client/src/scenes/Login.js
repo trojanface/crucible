@@ -1,12 +1,16 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import API from '../utilities/API';
 import InputBox from '../components/InputBox';
+import { store } from '../GlobalContext'
+
 
 export default function Login() {
     const [scene, setScene] = useState('login')
     const [user, setUser] = useState({ username: '', password: '' })
+    const { state, setState } = useContext(store);
+//needs to set context to have logged in user details.
     function loginUserInput(change) {
         let tempUser = user;
         tempUser[change[0].indexTitle] = change[1]
@@ -14,9 +18,11 @@ export default function Login() {
     }
     function login(event) {
         event.preventDefault();
-        API.login({ username: user.username, password: user.password }).then(() => {
-            setScene('home');
+        API.login({ username: user.username, password: user.password }).then((response) => {
             console.log("logged in successful");
+            setState(response.data);//will need to prevent the password being sent in the response.
+        }).then(() => {
+            setScene('home');
         }).catch((err) => {
             console.log(err)
         });

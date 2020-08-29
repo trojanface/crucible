@@ -7,7 +7,7 @@ import API from '../utilities/API';
 
 export default function Signup() {
     const [scene, setScene] = useState('signup');
-    const [newUser, setNewUser] = useState({ username: '', firstname: '', lastname: '', email: '', password: '', height: '', weight: '', DOB: '', gender: '' })
+    const [newUser, setNewUser] = useState({ username: '', firstname: '', lastname: '', email: '', password: '', height: '', weight: '', DOB: '', gender: '', ownedEquipment: '' })
     //interprets input box changes for a new user
     function newUserInput(change) {
         let tempUser = newUser;

@@ -22,6 +22,14 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        increment: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        ownedBy: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         isActive: {
             type: DataTypes.BOOLEAN,
             defaultValue: true
