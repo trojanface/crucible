@@ -5,16 +5,17 @@ import { store } from '../GlobalContext'
 import AddEquipment from './AddEquipment';
 import MenuBar from '../components/MenuBar';
 export default function AddExercise() {
-    const [newExercise, setNewExercise] = useState({ name: '', type: 'Compound', primary: '', secondary: '', equipment: '' })
+    const [newExercise, setNewExercise] = useState({ stage: 0, fails: 0, lastCompleted: Date.now(), weight: 0, name: '', type: 'Compound', primary: '', secondary: '', equipment: '', isPush: false })
     const [exerciseArray, setExerciseArray] = useState([])
-    const { state, setState } = useContext(store);
+
     const [equipmentArray, setEquipmentArray] = useState([])
     const [eqNames, setEqNames] = useState('')
     let muscleGroups = ['chest', 'back', 'abdominals', 'legs', 'shoulders', 'glutes', 'biceps', 'triceps', 'latissimus dorsi'];
     const [trigger, setTrigger] = useState(false)
+    const { gUser, equipment, exercises, setExercises } = useContext(store);
     useEffect(() => {
-        getExercises();
-        getEquipment();
+        setEquipmentArray(equipment)
+        setExerciseArray(exercises)
     }, [])
     function exerciseInput(change) {
         let tempEx = newExercise;
@@ -23,29 +24,12 @@ export default function AddExercise() {
     }
     function addExercise(event) {
         event.preventDefault();
-        API.addExercise({ ownedBy: state.user_id, name: newExercise.name, type: newExercise.type, primary: newExercise.primary, secondary: newExercise.secondary, equipment: newExercise.equipment }).then(() => {
+        API.addExercise({stage: newExercise.stage, fails: newExercise.fails, lastCompleted: newExercise.lastCompleted, weight: newExercise.weight, ownedBy: gUser.user_id,isPush: newExercise.isPush, name: newExercise.name, type: newExercise.type, primary: newExercise.primary, secondary: newExercise.secondary, equipment: newExercise.equipment }).then(() => {
             console.log("New exercise added");
+            setExercises(null);//This will trigger an api request to update the list however it also needs to refresh react component tree
         }).catch((err) => {
             console.log(err)
         });
-    }
-    function getExercises() {
-        console.log('querying database')
-        API.getExercises(state.user_id).then((response) => {
-            setExerciseArray(response.data);
-            console.log('exercises retrieved');
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
-    function getEquipment() {
-        console.log('querying database')
-        API.getEquipment(state.user_id).then((response) => {
-            setEquipmentArray(response.data);
-            console.log('equipment retrieved');
-        }).catch((err) => {
-            console.log(err)
-        })
     }
     function addEquipment({ name, equipment_id }) {
         console.log(equipment_id)
@@ -91,6 +75,7 @@ export default function AddExercise() {
             <h1>Add new Exercise</h1>
 
             <InputBox inputType="text" indexTitle="name" changeValue={exerciseInput} title="Name" placehold="" />
+            <InputBox inputType="number" indexTitle="weight" changeValue={exerciseInput} title="Starting Weight" placehold="" />
             <label>Type: {newExercise.type}</label>
             <button onClick={() => {
                 let tempEx = newExercise;
@@ -104,6 +89,19 @@ export default function AddExercise() {
                 setNewExercise(tempEx)
                 setTrigger(!trigger);
             }}>Isolation</button>
+            <label>Push/Pull: {newExercise.isPush ? <span>Push</span> : <span>Pull</span>}</label>
+            <button onClick={() => {
+                let tempEx = newExercise;
+                tempEx.isPush = true
+                setNewExercise(tempEx)
+                setTrigger(!trigger);
+            }}>Push</button>
+            <button onClick={() => {
+                let tempEx = newExercise;
+                tempEx.isPush = false
+                setNewExercise(tempEx)
+                setTrigger(!trigger);
+            }}>Pull</button>
             <label>Primary muscles targeted: {newExercise.primary}</label>
             {muscleGroups.map((element, index) => {
                 return <>

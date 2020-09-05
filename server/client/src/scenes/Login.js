@@ -9,7 +9,7 @@ import { store } from '../GlobalContext'
 export default function Login() {
     const [scene, setScene] = useState('login')
     const [user, setUser] = useState({ username: '', password: '' })
-    const { state, setState } = useContext(store);
+    const { gUser, setGUser } = useContext(store);
 //needs to set context to have logged in user details.
     function loginUserInput(change) {
         let tempUser = user;
@@ -20,7 +20,7 @@ export default function Login() {
         event.preventDefault();
         API.login({ username: user.username, password: user.password }).then((response) => {
             console.log("logged in successful");
-            setState(response.data);//will need to prevent the password being sent in the response.
+            setGUser(response.data);//will need to prevent the password being sent in the response.
         }).then(() => {
             setScene('home');
         }).catch((err) => {

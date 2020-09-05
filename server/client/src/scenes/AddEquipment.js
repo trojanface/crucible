@@ -6,9 +6,9 @@ import MenuBar from '../components/MenuBar'
 export default function AddEquipment() {
     const [newEquipment, setNewEquipment] = useState({name: '', type: '', minWeight: '', maxWeight: '', increment: ''})
 const [equipmentArray, setEquipmentArray] = useState([])
-const { state, setState } = useContext(store);
+const { gUser, equipment, setEquipment } = useContext(store);
     useEffect(() => {
-        getEquipment();
+        setEquipmentArray(equipment)
     }, [])
 
     function equipmentInput(change) {
@@ -18,22 +18,15 @@ const { state, setState } = useContext(store);
     }
     function addEquipment(event) {
         event.preventDefault();
-        API.addEquipment({ ownedBy: state.user_id, name: newEquipment.name, type: newEquipment.type, minWeight: newEquipment.minWeight, maxWeight: newEquipment.maxWeight, increment: newEquipment.increment }).then(() => {
+        API.addEquipment({ ownedBy: gUser.user_id, name: newEquipment.name, type: newEquipment.type, minWeight: newEquipment.minWeight, maxWeight: newEquipment.maxWeight, increment: newEquipment.increment }).then(() => {
             console.log("New equipment added");
+            setEquipment(null);//This will trigger an api request to update the list however it also needs to refresh react component tree
         }).catch((err) => {
             console.log(err)
         });
     }
 
-    function getEquipment() {
-        console.log('querying database')
-        API.getEquipment(state.user_id).then((response) => {
-            setEquipmentArray(response.data);
-            console.log('equipment retrieved');
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
+
     return (
         <div>   
   <MenuBar/>

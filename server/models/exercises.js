@@ -30,6 +30,27 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        isPush: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+        stage: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0 //0 is endurance, 1 is hypertrophy, 2 is strength
+        },
+        weight: {
+            type: DataTypes.INTEGER,
+            defaultValue: 1,
+            allowNull: false
+        },
+        fails: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
+        lastCompleted: {
+            type: DataTypes.DATE,
+            defaultValue: sequelize.NOW
+        },
         isActive: {
             type: DataTypes.BOOLEAN,
             defaultValue: true

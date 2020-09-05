@@ -8,7 +8,7 @@ module.exports = {
     if (req.user) {//checking if user is validated
       db.exercises.findAll({
         where: { isActive: true, ownedBy: req.params.id },
-        attributes: ['ex_id','name','primaryMusc','secondaryMusc','isIsolation','equipmentRequired','ownedBy']
+        attributes: ['stage', 'weight', 'fails', 'lastCompleted','ex_id','name','primaryMusc','secondaryMusc','isIsolation','equipmentRequired','ownedBy','isPush']
       })
         .then(dbModel => {
           res.json(dbModel)

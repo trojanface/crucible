@@ -12,12 +12,12 @@ export default {
   getEquipment: function (user) {
     return axios.get('/api/equipment/all/'+user)
   },
-  addExercise: function ({ownedBy, name, type, primary, secondary, equipment}) {
+  addExercise: function ({stage, fails, lastCompleted, ownedBy, name, type, primary, secondary, equipment, isPush, weight}) {
     let isIso = false;
     if (type === 'Isolation') {
       isIso = true;
     }
-    return axios.post('/api/exercise', {ownedBy: ownedBy, name: name, isIsolation: isIso, primaryMusc: primary, secondaryMusc: secondary, equipmentRequired: equipment})
+    return axios.post('/api/exercise', {fails: fails, stage: stage, lastCompleted: lastCompleted, weight: weight, isPush: isPush, ownedBy: ownedBy, name: name, isIsolation: isIso, primaryMusc: primary, secondaryMusc: secondary, equipmentRequired: equipment})
   },
   addEquipment: function ({ownedBy, name, type, minWeight, maxWeight, increment}) {
     return axios.post('/api/equipment', {ownedBy: ownedBy, name: name, type: type, minWeight: minWeight, maxWeight: maxWeight, increment: increment})
